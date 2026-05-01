@@ -1,0 +1,517 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Playfair+Display+SC:wght@400;700;900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Special+Elite&family=Caveat:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-parchment: #F5ECD7;
+  --color-aged-paper: #EAD9B8;
+  --color-fold-shadow: #C9A87C;
+  --color-ink-black: #1A1008;
+  --color-telegraph-brown: #3D2B1F;
+  --color-stamp-red: #B33A3A;
+  --color-campaign-navy: #1C3557;
+  --color-postmark-purple: #5C3D6E;
+  --color-faded-green: #3A5C3E;
+  --color-telegram-yellow: #C8A84B;
+  --color-muted-sepia: #8B6F47;
+  --color-teal-ink: #0F6E56;
+  --color-muted-rose: #A04060;
+
+  --font-playfair: 'Playfair Display', serif;
+  --font-playfair-sc: 'Playfair Display SC', serif;
+  --font-baskerville: 'Libre Baskerville', serif;
+  --font-lora: 'Lora', serif;
+  --font-elite: 'Special Elite', cursive;
+  --font-caveat: 'Caveat', cursive;
+}
+
+/* ======= SVG PAPER GRAIN FILTER ======= */
+svg#paper-grain-filter {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ======= GLOBAL BODY & BACKGROUND ======= */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-lora);
+  color: #1A1008;
+  background-color: #F5ECD7;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(212,184,150,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(201,168,124,0.25) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(212,184,150,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 10% 90%, rgba(201,168,124,0.15) 0%, transparent 40%),
+    radial-gradient(ellipse at 90% 70%, rgba(201,168,124,0.2) 0%, transparent 45%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 100px,
+      rgba(201,168,124,0.05) 100px,
+      rgba(201,168,124,0.05) 101px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 80px,
+      rgba(201,168,124,0.04) 80px,
+      rgba(201,168,124,0.04) 81px
+    );
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(61,43,31,0.12) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  filter: url(#paperGrain);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1;
+}
+
+#root {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+}
+
+/* ======= TYPOGRAPHY CLASSES ======= */
+.font-playfair { font-family: var(--font-playfair); }
+.font-playfair-sc { font-family: var(--font-playfair-sc); }
+.font-baskerville { font-family: var(--font-baskerville); }
+.font-lora { font-family: var(--font-lora); }
+.font-elite { font-family: var(--font-elite); }
+.font-caveat { font-family: var(--font-caveat); }
+
+/* ======= PAPER CARD STYLES ======= */
+.paper-card {
+  background: linear-gradient(145deg, #F0E0C0, #EAD9B8);
+  border: 1.5px solid #C9A87C;
+  box-shadow: 2px 4px 12px rgba(61,43,31,0.2), inset 0 0 60px rgba(201,168,124,0.1);
+  position: relative;
+}
+
+.paper-card-lined {
+  background-image:
+    linear-gradient(145deg, #F0E0C0, #EAD9B8),
+    repeating-linear-gradient(
+      transparent,
+      transparent 27px,
+      rgba(179,58,58,0.06) 27px,
+      rgba(179,58,58,0.06) 28px
+    );
+  border: 1.5px solid #C9A87C;
+  box-shadow: 2px 4px 12px rgba(61,43,31,0.2), inset 0 0 60px rgba(201,168,124,0.1);
+}
+
+/* ======= STAMP BUTTON ======= */
+.stamp-btn {
+  font-family: var(--font-elite);
+  background: #B33A3A;
+  color: #F5ECD7;
+  border: 2px solid #8a2828;
+  padding: 10px 24px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  position: relative;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3), 2px 3px 8px rgba(61,43,31,0.2);
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.stamp-btn:hover {
+  background: #922e2e;
+  transform: scale(1.02);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.35), 2px 4px 12px rgba(61,43,31,0.3);
+}
+
+.stamp-btn-outline {
+  font-family: var(--font-elite);
+  background: transparent;
+  color: #1C3557;
+  border: 2px solid #1C3557;
+  padding: 10px 24px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.stamp-btn-outline:hover {
+  background: rgba(28,53,87,0.08);
+  transform: scale(1.02);
+}
+
+/* ======= POSTAGE STAMP BADGE ======= */
+.postage-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-elite);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 6px 12px;
+  background: #EAD9B8;
+  border: 2px solid currentColor;
+  position: relative;
+}
+
+.postage-stamp::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 3px, currentColor 3px, currentColor 4px, transparent 4px, transparent 7px),
+    repeating-linear-gradient(90deg, transparent, transparent 3px, currentColor 3px, currentColor 4px, transparent 4px, transparent 7px);
+  opacity: 0.3;
+  pointer-events: none;
+  border-radius: 1px;
+}
+
+/* ======= VINTAGE DIVIDER ======= */
+.vintage-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #C9A87C;
+  font-size: 1.1rem;
+  padding: 16px 0;
+  user-select: none;
+}
+
+.vintage-divider::before,
+.vintage-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #C9A87C, transparent);
+}
+
+/* ======= AIRMAIL BORDER ======= */
+.airmail-border {
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      #B33A3A,
+      #B33A3A 8px,
+      #F5ECD7 8px,
+      #F5ECD7 16px,
+      #1C3557 16px,
+      #1C3557 24px,
+      #F5ECD7 24px,
+      #F5ECD7 32px
+    );
+  padding: 4px;
+}
+
+.airmail-border > * {
+  background: #F0E0C0;
+}
+
+/* ======= TELEGRAM CARD ======= */
+.telegram-card {
+  background: linear-gradient(145deg, #F5ECD7, #EAD9B8);
+  border: 2px solid #3D2B1F;
+  font-family: var(--font-elite);
+  position: relative;
+  box-shadow: 3px 5px 15px rgba(61,43,31,0.25);
+}
+
+.telegram-card::before {
+  content: '📨 TELEGRAM';
+  position: absolute;
+  top: -12px;
+  left: 16px;
+  background: #3D2B1F;
+  color: #F5ECD7;
+  font-family: var(--font-elite);
+  font-size: 0.7rem;
+  padding: 2px 10px;
+  letter-spacing: 2px;
+}
+
+/* ======= POSTCARD ======= */
+.postcard {
+  background: linear-gradient(145deg, #F0E0C0, #EAD9B8);
+  border: 1.5px solid #C9A87C;
+  box-shadow: 3px 5px 15px rgba(61,43,31,0.2);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.postcard:hover {
+  transform: rotate(0deg) translateY(-4px) !important;
+  box-shadow: 5px 8px 25px rgba(61,43,31,0.3);
+}
+
+/* ======= WAX SEAL ======= */
+.wax-seal {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #d44545, #B33A3A 40%, #8a2828 100%);
+  box-shadow: 2px 3px 6px rgba(61,43,31,0.3), inset 0 -2px 4px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #F5ECD7;
+  font-family: var(--font-playfair);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* ======= GOLD COIN / XP ======= */
+.gold-coin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #e0c060, #C8A84B 50%, #9a7d30 100%);
+  color: #3D2B1F;
+  font-family: var(--font-playfair);
+  font-weight: 800;
+  font-size: 0.75rem;
+  box-shadow: 1px 2px 5px rgba(61,43,31,0.3), inset 0 1px 2px rgba(255,255,255,0.3);
+  text-shadow: 0 1px 1px rgba(255,255,255,0.2);
+}
+
+/* ======= VINTAGE SEARCH INPUT ======= */
+.telegraph-input {
+  font-family: var(--font-elite);
+  background: linear-gradient(145deg, #F5ECD7, #EAD9B8);
+  border: 2px solid #3D2B1F;
+  color: #1A1008;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  width: 100%;
+  outline: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.telegraph-input::placeholder {
+  color: #8B6F47;
+  opacity: 0.7;
+}
+
+.telegraph-input:focus {
+  box-shadow: 0 0 0 3px rgba(179,58,58,0.15);
+}
+
+/* ======= LOADING TELEGRAM ======= */
+.loading-telegram {
+  font-family: var(--font-elite);
+  color: #3D2B1F;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: telegramPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes telegramPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ======= MORSE CODE ANIMATION ======= */
+.morse-dots {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.morse-dots span {
+  display: block;
+  background: #3D2B1F;
+  border-radius: 50%;
+  animation: morseFlash 1.2s ease-in-out infinite;
+}
+
+.morse-dots span:nth-child(1) { width: 6px; height: 6px; animation-delay: 0s; }
+.morse-dots span:nth-child(2) { width: 10px; height: 6px; border-radius: 3px; animation-delay: 0.2s; }
+.morse-dots span:nth-child(3) { width: 6px; height: 6px; animation-delay: 0.4s; }
+.morse-dots span:nth-child(4) { width: 10px; height: 6px; border-radius: 3px; animation-delay: 0.6s; }
+
+@keyframes morseFlash {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+/* ======= NEWSPAPER HEADLINE ======= */
+.newspaper-headline {
+  font-family: var(--font-playfair);
+  font-weight: 900;
+  line-height: 1.1;
+  color: #1A1008;
+  text-transform: uppercase;
+}
+
+.newspaper-subhead {
+  font-family: var(--font-baskerville);
+  font-style: italic;
+  color: #3D2B1F;
+  border-top: 2px solid #1A1008;
+  border-bottom: 1px solid #C9A87C;
+  padding: 8px 0;
+  margin-top: 8px;
+}
+
+/* ======= COLUMN RULES ======= */
+.column-rule {
+  border-left: 1px solid #C9A87C;
+}
+
+/* ======= SEPIA IMAGE FILTER ======= */
+.sepia-image {
+  filter: sepia(40%) saturate(70%) brightness(90%) contrast(95%);
+  transition: filter 0.3s ease;
+}
+
+.sepia-image:hover {
+  filter: sepia(20%) saturate(80%) brightness(95%) contrast(100%);
+}
+
+/* ======= SCROLLBAR STYLING ======= */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #EAD9B8;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C9A87C;
+  border-radius: 5px;
+  border: 2px solid #EAD9B8;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8B6F47;
+}
+
+/* ======= PAGE TRANSITION WRAPPER ======= */
+.page-wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ======= NAV STYLES ======= */
+.nav-link {
+  font-family: var(--font-elite);
+  color: #3D2B1F;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  transition: color 0.2s ease, background 0.2s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #B33A3A;
+}
+
+.nav-link.active {
+  color: #B33A3A;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: #B33A3A;
+}
+
+/* ======= TOOLTIP ======= */
+.vintage-tooltip {
+  position: absolute;
+  background: #F5ECD7;
+  border: 1px solid #C9A87C;
+  padding: 6px 10px;
+  font-family: var(--font-caveat);
+  font-size: 0.85rem;
+  color: #3D2B1F;
+  box-shadow: 2px 3px 8px rgba(61,43,31,0.15);
+  transform: rotate(-2deg);
+  z-index: 50;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* ======= ORNAMENTAL FOOTER ======= */
+.ink-blot {
+  width: 30px;
+  height: 30px;
+  background: radial-gradient(ellipse at center, rgba(61,43,31,0.15), transparent 70%);
+  border-radius: 50% 40% 60% 30%;
+}
+
+/* ======= RUBBER STAMP BADGE ======= */
+.rubber-stamp {
+  display: inline-block;
+  font-family: var(--font-elite);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #B33A3A;
+  border: 3px solid #B33A3A;
+  border-radius: 4px;
+  padding: 4px 14px;
+  transform: rotate(-5deg);
+  opacity: 0.85;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* ======= RESPONSIVE ADJUSTMENTS ======= */
+@media (max-width: 768px) {
+  .page-wrapper {
+    padding: 0 16px;
+  }
+  
+  .newspaper-headline {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .newspaper-headline {
+    font-size: 1.4rem;
+  }
+}
