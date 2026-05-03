@@ -24,11 +24,9 @@ export default function Navbar() {
       initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="sticky top-0 z-50"
+      className="glass-nav"
       style={{
-        background: 'linear-gradient(180deg, #F5ECD7 0%, #EAD9B8 100%)',
         borderBottom: '2px solid #C9A87C',
-        boxShadow: '0 2px 12px rgba(61,43,31,0.15)',
       }}
     >
       <div className="page-wrapper flex items-center justify-between py-3">
