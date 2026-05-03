@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getTopicById, getNextTopic } from '../data/topics';
-import { getLessonContent, getQuizQuestions } from '../services/claude';
+import { getLessonContent, getQuizQuestions } from '../services/geminiService';
 import { addXP, completeLesson } from '../services/storage';
 import { LoadingTelegram } from '../components/VintageUI';
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { countries, SYSTEM_TYPES } from '../data/countries';
-import { getSimulationSteps } from '../services/claude';
+import { getSimulationSteps } from '../services/geminiService';
 import { LoadingTelegram, OrnamentalDivider, PageFooter } from '../components/VintageUI';
 
 const STEP_STYLES = {

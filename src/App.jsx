@@ -1,8 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import VoxBubble from './components/VoxBubble';
 import Landing from './pages/Landing';
+import Login from './pages/Login';
 import LearnPath from './pages/LearnPath';
 import Lesson from './pages/Lesson';
 import Explore from './pages/Explore';
@@ -25,15 +29,16 @@ function AnimatedRoutes() {
         transition={{ duration: 0.3, ease: 'easeInOut' }}
       >
         <Routes location={location}>
+          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Landing />} />
-          <Route path="/learn" element={<LearnPath />} />
-          <Route path="/learn/:topicId" element={<Lesson />} />
+          <Route path="/learn" element={<ProtectedRoute><LearnPath /></ProtectedRoute>} />
+          <Route path="/learn/:topicId" element={<ProtectedRoute><Lesson /></ProtectedRoute>} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/country/:countryName" element={<CountryDeepDive />} />
-          <Route path="/simulate" element={<Simulate />} />
-          <Route path="/compare" element={<Compare />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/timeline" element={<Timeline />} />
+          <Route path="/simulate" element={<ProtectedRoute><Simulate /></ProtectedRoute>} />
+          <Route path="/compare" element={<ProtectedRoute><Compare /></ProtectedRoute>} />
+          <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+          <Route path="/timeline" element={<ProtectedRoute><Timeline /></ProtectedRoute>} />
         </Routes>
       </motion.div>
     </AnimatePresence>
@@ -42,8 +47,10 @@ function AnimatedRoutes() {
 
 export default function App() {
   return (
-    <Router>
-      {/* SVG Paper Grain Filter */}
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || 'your_google_client_id_here'}>
+      <AuthProvider>
+        <Router>
+          {/* SVG Paper Grain Filter */}
       <svg id="paper-grain-filter" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <filter id="paperGrain">
@@ -73,6 +80,8 @@ export default function App() {
       <Navbar />
       <AnimatedRoutes />
       <VoxBubble />
-    </Router>
+        </Router>
+      </AuthProvider>
+    </GoogleOAuthProvider>
   );
 }

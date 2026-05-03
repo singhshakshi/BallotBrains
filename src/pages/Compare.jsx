@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { countries, SYSTEM_TYPES } from '../data/countries';
-import { getComparison } from '../services/claude';
+import { getComparison } from '../services/geminiService';
 import { LoadingTelegram, OrnamentalDivider, PageFooter } from '../components/VintageUI';
 
 export default function Compare() {

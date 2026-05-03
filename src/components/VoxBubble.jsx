@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { chatWithVox } from '../services/claude';
+import { chatWithVox } from '../services/geminiService';
 
 export default function VoxBubble() {
   const [isOpen, setIsOpen] = useState(false);

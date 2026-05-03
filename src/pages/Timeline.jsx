@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TIMELINE_EVENTS, getEventsByFilter } from '../data/timeline';
-import { getTimelineEventDetail } from '../services/claude';
+import { getTimelineEventDetail } from '../services/geminiService';
 import { OrnamentalDivider, PageFooter, LoadingTelegram } from '../components/VintageUI';
 
 const REGIONS = ['All', 'Europe', 'Americas', 'Asia', 'Africa', 'Oceania', 'Middle East'];

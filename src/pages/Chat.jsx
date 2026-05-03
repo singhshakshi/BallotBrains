@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { chatWithVox } from '../services/claude';
+import { chatWithVox } from '../services/geminiService';
 import { PageFooter } from '../components/VintageUI';
 
 const STARTER_PROMPTS = [

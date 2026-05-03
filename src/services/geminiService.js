@@ -1,5 +1,3 @@
-const CLAUDE_API_KEY = import.meta.env.VITE_CLAUDE_API_KEY || '';
-
 const VOX_SYSTEM_PROMPT = `You are Vox, an expert election systems guide inside the BalletBrains app. 
 You are styled as a witty vintage telegraph correspondent and world election reporter.
 You only answer questions related to elections, voting systems, democracy, 
@@ -8,36 +6,29 @@ and engaging. Use analogies. Occasionally use telegraph-style language
 ("STOP", "WIRE CONFIRMED", "DISPATCH FOLLOWS") as flavor. Never discuss 
 unrelated topics. When explaining election levels, return structured JSON when requested.`;
 
-async function callClaude(messages, systemPrompt = VOX_SYSTEM_PROMPT, maxTokens = 1024) {
-  if (!CLAUDE_API_KEY) {
-    return getFallbackResponse(messages);
-  }
-
+async function callGemini(messages, systemPrompt = VOX_SYSTEM_PROMPT, maxTokens = 1024) {
   try {
-    const response = await fetch('/api/v1/messages', {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'}/api/gemini/message`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': CLAUDE_API_KEY,
-        'anthropic-version': '2023-06-01',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: maxTokens,
+        model: 'gemini-2.5-flash',
         system: systemPrompt,
         messages: messages,
       }),
     });
 
     if (!response.ok) {
-      console.warn('Claude API error, using fallback');
+      console.warn('Gemini API error, using fallback');
       return getFallbackResponse(messages);
     }
 
     const data = await response.json();
     return data.content[0].text;
   } catch (error) {
-    console.warn('Claude API unavailable, using fallback:', error.message);
+    console.warn('Gemini API unavailable, using fallback:', error.message);
     return getFallbackResponse(messages);
   }
 }
@@ -77,7 +68,7 @@ function getFallbackResponse(messages) {
       who_votes: "All eligible citizens of voting age (typically 18+)",
       how_winner_decided: "Varies by country — may use FPTP, PR, or mixed systems",
       term_length: "4-6 years typically",
-      key_facts: ["Represents the highest legislative authority", "Passes national laws and budgets", "May consist of one or two chambers"],
+      key_facts: ["Represents the highest legislative authority", "Passes national laws laws and budgets", "May consist of one or two chambers"],
     });
   }
 
@@ -114,7 +105,7 @@ function getFallbackResponse(messages) {
 }
 
 export async function getLessonContent(topicId) {
-  const response = await callClaude([
+  const response = await callGemini([
     { role: 'user', content: `Generate lesson content for the topic "${topicId}". Return JSON with fields: story (a vivid telegraph-style narrative, 150 words), visual_title, visual_description, key_points (array of 4 strings).` }
   ]);
   try {
@@ -125,7 +116,7 @@ export async function getLessonContent(topicId) {
 }
 
 export async function getQuizQuestions(topicId) {
-  const response = await callClaude([
+  const response = await callGemini([
     { role: 'user', content: `Generate 3 quiz questions for the topic "${topicId}". Return JSON array with objects: question, options (4 strings), correct (0-3 index), explanation.` }
   ]);
   try {
@@ -136,7 +127,7 @@ export async function getQuizQuestions(topicId) {
 }
 
 export async function getCountryRoadmap(countryName) {
-  const response = await callClaude([
+  const response = await callGemini([
     { role: 'user', content: `Provide the election hierarchy/roadmap for ${countryName}. Return JSON array with objects: id, label, level (number), description. From local to national level.` }
   ]);
   try {
@@ -147,7 +138,7 @@ export async function getCountryRoadmap(countryName) {
 }
 
 export async function getNodeDetails(countryName, nodeName) {
-  const response = await callClaude([
+  const response = await callGemini([
     { role: 'user', content: `Explain the "${nodeName}" election level in ${countryName}. Return JSON: name, who_votes, how_winner_decided, term_length, key_facts (array of 3).` }
   ]);
   try {
@@ -158,7 +149,7 @@ export async function getNodeDetails(countryName, nodeName) {
 }
 
 export async function getSimulationSteps(countryName, electionType) {
-  const response = await callClaude([
+  const response = await callGemini([
     { role: 'user', content: `Simulate a ${electionType} election in ${countryName}. Return JSON array of 4 steps: step (number), title, description (telegraph style), type (notice/ballot/gazette).` }
   ]);
   try {
@@ -169,7 +160,7 @@ export async function getSimulationSteps(countryName, electionType) {
 }
 
 export async function getComparison(country1, country2) {
-  const response = await callClaude([
+  const response = await callGemini([
     { role: 'user', content: `Compare the election systems of ${country1} and ${country2}. Return JSON: comparison (overview), country1_strengths (array), country2_strengths (array), verdict (Vox-style conclusion).` }
   ]);
   try {
@@ -180,7 +171,7 @@ export async function getComparison(country1, country2) {
 }
 
 export async function getTimelineEventDetail(event, country, year) {
-  const response = await callClaude([
+  const response = await callGemini([
     { role: 'user', content: `Give a detailed account of the "${event}" election event in ${country} in ${year}. Return JSON: headline, full_summary, why_it_mattered, international_reaction, long_term_impact, vox_take.` }
   ]);
   try {
@@ -195,7 +186,7 @@ export async function chatWithVox(messages) {
     role: m.role,
     content: m.content,
   }));
-  return await callClaude(formattedMessages);
+  return await callGemini(formattedMessages);
 }
 
 export { VOX_SYSTEM_PROMPT };

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getCountryByName, SYSTEM_TYPES, ELECTION_ROADMAPS } from '../data/countries';
-import { getCountryRoadmap, getNodeDetails } from '../services/claude';
+import { getCountryRoadmap, getNodeDetails } from '../services/geminiService';
 import { LoadingTelegram, PageFooter, OrnamentalDivider } from '../components/VintageUI';
 
 export default function CountryDeepDive() {

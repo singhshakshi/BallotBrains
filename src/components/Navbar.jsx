@@ -2,10 +2,13 @@ import { Link, NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { getUserData } from '../services/storage';
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
   const user = getUserData();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { user: authUser, logout } = useAuth();
 
   const links = [
     { to: '/learn', label: 'Learn' },
@@ -58,8 +61,8 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* XP Badge */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* XP Badge & User Avatar */}
+        <div className="hidden md:flex items-center gap-4">
           <div className="flex items-center gap-2">
             <div className="gold-coin" title="Experience Points">{user.xp}</div>
             {user.streak > 0 && (
@@ -68,6 +71,37 @@ export default function Navbar() {
               </span>
             )}
           </div>
+
+          {authUser ? (
+            <div className="relative">
+              <button 
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex items-center gap-2 focus:outline-none"
+              >
+                <img 
+                  src={authUser.picture} 
+                  alt="User" 
+                  className="w-8 h-8 rounded-full border-2 border-[#C9A87C] sepia-image"
+                />
+              </button>
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 paper-card-lined z-50">
+                  <div className="p-3 border-b border-[#C9A87C]">
+                    <p className="font-playfair font-bold text-sm m-0">{authUser.name}</p>
+                    <p className="font-elite text-xs text-[#8B6F47] truncate m-0">{authUser.email}</p>
+                  </div>
+                  <button 
+                    onClick={logout}
+                    className="w-full text-left px-4 py-2 font-elite text-sm text-[#B33A3A] hover:bg-[#EAD9B8] transition-colors"
+                  >
+                    SIGN OUT
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to="/login" className="stamp-btn-outline text-xs py-1 px-3">SIGN IN</Link>
+          )}
         </div>
 
         {/* Mobile menu button */}
